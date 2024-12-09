@@ -37,8 +37,9 @@ keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
 
 keymap.set("n", "L", "$")
 keymap.set("n", "H", "^")
+keymap.set("n", "O", "%")
 
---auto add closing {, (, [, ", ', <
+
 keymap.set('i', '{<cr>', '{<cr>}<ESC>kA<CR>', {})
 closing_pairs = {'}', ')', ']', '"', "'", '>'}
 opening_pairs = {'{', '(', '[', '"', "'", '<'}
@@ -47,3 +48,18 @@ do
   keymap.set('i', chr, chr..closing_pairs[key]..'<esc>i', {})
 end
 
+
+local closing_pairs = { ['}'] = '{', [')'] = '(', [']'] = '[', ['"'] = '"', ["'"] = "'", ['>'] = '<' }
+for close_char, open_char in pairs(closing_pairs) do
+  keymap.set('i', close_char, function()
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.fn.col('.')
+    local next_char = line:sub(col, col) -- Ký tự ngay sau con trỏ
+
+    if next_char == close_char then
+      return '<Right>'
+    else
+      return close_char
+    end
+  end, { expr = true, noremap = true })
+end

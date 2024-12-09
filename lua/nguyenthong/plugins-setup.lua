@@ -80,6 +80,8 @@ return packer.startup(function(use)
 
   use ('otavioschwanck/arrow.nvim')
 
+  use ('folke/tokyonight.nvim')
+ 
     if packer_bootstrap then
     require("packer").sync()
   end
