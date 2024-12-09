@@ -26,11 +26,24 @@ keymap.set("n", "<leader>tp", ":tabp<CR>") -- leader tab previous
 keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>")
 
 --nvim tree
-keymap.set("n", "<leader>em", ":NvimTreeToggle<CR>")
+keymap.set("n","<leader>e", ":NvimTreeToggle<CR>")
 
 -- telescope
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>")
 keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>")
-keymap.set("n", "<leader>fb", "<cmd>Telescope buffersk<cr>")
+keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") 
+
+keymap.set("n", "L", "$")
+keymap.set("n", "H", "^")
+
+--auto add closing {, (, [, ", ', <
+keymap.set('i', '{<cr>', '{<cr>}<ESC>kA<CR>', {})
+closing_pairs = {'}', ')', ']', '"', "'", '>'}
+opening_pairs = {'{', '(', '[', '"', "'", '<'}
+for key, chr in pairs(opening_pairs)
+do
+  keymap.set('i', chr, chr..closing_pairs[key]..'<esc>i', {})
+end
+
