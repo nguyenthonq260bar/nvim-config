@@ -74,14 +74,15 @@ return packer.startup(function(use)
   use 'hrsh7th/cmp-path' -- Nguồn từ đường dẫn file
   use 'L3MON4D3/LuaSnip' -- Plugin snippet
   use 'saadparwaiz1/cmp_luasnip' -- Tích hợp LuaSnip với nvim-cmp
-  use 'neovim/nvim-lspconfig' -- Cấu hình LSP
-
+  use 'neovim/nvim-lspconfig'  -- Cấu hình LSP
+  use 'williamboman/mason.nvim' -- Quản lý LSP và công cụ bổ trợ
+  use 'williamboman/mason-lspconfig.nvim' -- Tự động cấu hình LSP từ mason.nvim
   use 'rafamadriz/friendly-snippets'
 
   use ('otavioschwanck/arrow.nvim')
 
   use ('folke/tokyonight.nvim')
- 
+
     if packer_bootstrap then
     require("packer").sync()
   end

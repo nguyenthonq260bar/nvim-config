@@ -48,7 +48,6 @@ do
   keymap.set('i', chr, chr..closing_pairs[key]..'<esc>i', {})
 end
 
-
 local closing_pairs = { ['}'] = '{', [')'] = '(', [']'] = '[', ['"'] = '"', ["'"] = "'", ['>'] = '<' }
 for close_char, open_char in pairs(closing_pairs) do
   keymap.set('i', close_char, function()
