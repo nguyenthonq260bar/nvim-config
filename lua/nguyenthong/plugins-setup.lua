@@ -31,57 +31,74 @@ end
 
 -- Khai báo plugin
 return packer.startup(function(use)
-  use("wbthomason/packer.nvim") -- Quản lý chính Packer
+ -- Quản lý plugin với Packer
+  use("wbthomason/packer.nvim")
 
+  -- Plugin hỗ trợ Lua
   use("nvim-lua/plenary.nvim")
 
+  -- Giao diện và UI
   use("bluz71/vim-nightfly-guicolors") -- Giao diện màu "nightfly"
-
-  use("christoomey/vim-tmux-navigator")
-
-  use("szw/vim-maximizer")
-
-  use("tpope/vim-surround")
-
-  use("vim-scripts/ReplaceWithRegister")
-
-  use("numToStr/Comment.nvim")
-
-  use("nvim-tree/nvim-tree.lua")
-
-  use("kyazdani42/nvim-web-devicons")
+  use("kyazdani42/nvim-web-devicons") -- Biểu tượng cho UI
+  use("nvim-lualine/lualine.nvim") -- Thanh trạng thái đẹp
+  use("folke/tokyonight.nvim") -- Giao diện màu "tokyonight"
+  use("xiyaowong/transparent.nvim")
+  use { "catppuccin/nvim", as = "catppuccin" }
   
-  use("nvim-lualine/lualine.nvim")
+  use {
+      'nvim-treesitter/nvim-treesitter',
+      run = function()
+          local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+          ts_update()
+      end,
+  }
+  --Điều hướng 
+  use("christoomey/vim-tmux-navigator") -- Di chuyển giữa tmux và Vim dễ dàng
+  use("szw/vim-maximizer") -- Phóng to/phục hồi cửa sổ
+  use("nvim-tree/nvim-tree.lua") -- Trình quản lý file dạng cây
 
+  -- Tìm kiếm và thay thế
   use({
-        'nvim-telescope/telescope.nvim',
-        requires = {
-            'nvim-lua/plenary.nvim',
-            {
-                'nvim-telescope/telescope-fzf-native.nvim',
-                run = 'make',
-            },
-        },
-        config = function()
-            require('telescope').setup({})
-        end,
-    })
+    'nvim-telescope/telescope.nvim', -- Công cụ tìm kiếm mạnh mẽ
+    requires = {
+      'nvim-lua/plenary.nvim', -- Yêu cầu bởi telescope
+      {
+        'nvim-telescope/telescope-fzf-native.nvim', -- Tăng tốc tìm kiếm với FZF
+        run = 'make',
+      },
+    },
+    config = function()
+      require('telescope').setup({})
+    end,
+  })
 
- 
-  use 'hrsh7th/nvim-cmp' -- Plugin chính cho autocompletion
-  use 'hrsh7th/cmp-nvim-lsp' -- Nguồn từ LSP
-  use 'hrsh7th/cmp-buffer' -- Nguồn từ buffer hiện tại
-  use 'hrsh7th/cmp-path' -- Nguồn từ đường dẫn file
-  use 'L3MON4D3/LuaSnip' -- Plugin snippet
-  use 'saadparwaiz1/cmp_luasnip' -- Tích hợp LuaSnip với nvim-cmp
-  use 'neovim/nvim-lspconfig'  -- Cấu hình LSP
-  use 'williamboman/mason.nvim' -- Quản lý LSP và công cụ bổ trợ
-  use 'williamboman/mason-lspconfig.nvim' -- Tự động cấu hình LSP từ mason.nvim
-  use 'rafamadriz/friendly-snippets'
+  -- Công cụ chỉnh sửa
+  use("tpope/vim-surround") -- Quản lý dấu ngoặc nhanh chóng
+  use("vim-scripts/ReplaceWithRegister") -- Thay thế văn bản với nội dung trong register
+  use("numToStr/Comment.nvim") -- Bình luận/uncomment code nhanh chóng
 
-  use ('otavioschwanck/arrow.nvim')
+  -- Hỗ trợ LSP và Autocompletion
+  use('neovim/nvim-lspconfig') -- Cấu hình LSP
+  use('williamboman/mason.nvim') -- Quản lý LSP và công cụ bổ trợ
+  use('williamboman/mason-lspconfig.nvim') -- Tự động cấu hình LSP từ Mason
+  use('hrsh7th/nvim-cmp') -- Plugin chính cho autocompletion
+  use('hrsh7th/cmp-nvim-lsp') -- Nguồn từ LSP
+  use('hrsh7th/cmp-buffer') -- Nguồn từ buffer hiện tại
+  use('hrsh7th/cmp-path') -- Nguồn từ đường dẫn file
+  use('L3MON4D3/LuaSnip') -- Plugin snippet
+  use('saadparwaiz1/cmp_luasnip') -- Tích hợp LuaSnip với nvim-cmp
+  use('rafamadriz/friendly-snippets') -- Bộ snippet sẵn có
 
-  use ('folke/tokyonight.nvim')
+  -- Plugin tiện ích khác
+  use('otavioschwanck/arrow.nvim') -- Hỗ trợ điều hướng tốt hơn 
+
+  use {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = function()
+        require("nvim-autopairs").setup {}
+    end
+  }
 
     if packer_bootstrap then
     require("packer").sync()
