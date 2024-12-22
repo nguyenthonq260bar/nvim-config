@@ -6,12 +6,27 @@ end
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.cmd([[ highlight NvimTreeIndentMarker guifg=#3FC5FF ]])
+vim.cmd([[ highlight NvimTreeIndentMarker guifg=#ffffff]])
+vim.cmd([[ highlight NvimTreeWinSeparator guifg=#ffffff guibg=None]])
+vim.cmd([[ highlight VertSlip guifg=#ffffff guibg=#ffffff]])
+vim.cmd([[ highlight VertSplit guifg=#ffffff guibg=None]])
+
+
+
+
 
 nvimtree.setup({
- renderer = {
+  view = {
+    float = {
+      enable = false,
+    },
+    side = 'left',
+  },
+  renderer = {
+    highlight_opened_files = "none",
+
     indent_markers = {
-      enable = true, -- Tắt đường kẻ indent
+    enable = true,
     },
   },
 })

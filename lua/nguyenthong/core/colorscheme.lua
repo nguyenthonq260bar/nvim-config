@@ -1,5 +1,7 @@
 -- Cấu hình colorscheme
 local colorscheme = "catppuccin"
+-- theme1: nightfly
+-- theme2: tokyonight
 
 local status, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 
@@ -55,18 +57,4 @@ require("catppuccin").setup({
         },
     },
 })
--- theme1: nightfly
--- theme2: tokyonight
 
--- Cấu hình Treesitter
-require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "python", "lua", "javascript", "html", "css" }, -- Ngôn ngữ cần hỗ trợ
-    highlight = {
-        enable = true, -- Kích hoạt highlight
-    },
-    indent = {
-        enable = true, -- Tự động indent dựa trên cú pháp
-    },
-}
-
--- Gợi ý: Nếu bạn chuyển đổi colorscheme thường xuyên, bạn có thể tạo một hàm để chuyển đổi nhanh:

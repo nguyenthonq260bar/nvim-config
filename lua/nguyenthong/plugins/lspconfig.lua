@@ -2,13 +2,14 @@ local mason = require('mason')
 local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local mason_lspconfig = require("mason-lspconfig")
+local util = require('lspconfig.util')
 
 
 
 mason.setup()
 -- Cấu hình Mason LSP
 mason_lspconfig.setup({
-  ensure_installed = { 'html', 'cssls' },
+  ensure_installed = { 'html', 'cssls', 'pyright', 'lua_ls' },
 })
 
 
@@ -21,6 +22,44 @@ lspconfig.pyright.setup{
     },
   },
 }
+
+
+
+lspconfig.lua_ls.setup {
+    on_init = function(client)
+      if client.workspace_folders then
+        local path = client.workspace_folders[1].name
+        if vim.loop.fs_stat(path.. '/.luarc.json') or vim.loop.fs_stat(path..'.luarc.jsonc') then
+          return
+        end
+      end
+    end,
+
+
+    settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',  -- Đảm bảo bạn đang dùng LuaJIT nếu là Neovim
+      },
+      diagnostics = {
+        globals = {'vim'},  -- Nhận diện biến `vim`
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),  -- Nhận diện thư viện runtime của Neovim
+      },
+      telemetry = {
+        enable = false,  -- Tắt tính năng gửi dữ liệu telemetry
+      },
+    },
+  },
+}
+
+
+
+
+
+
+
 
 -- Cấu hình LSP cho HTML
 lspconfig.html.setup{

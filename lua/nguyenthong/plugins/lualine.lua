@@ -1,112 +1,92 @@
-local status, lualine = pcall(require, "lualine")
-if not status then
-  return
-end
+local mode_map = {
+  ['NORMAL'] = 'N', --
+  ['O-PENDING'] = 'N?',
+  ['INSERT'] = 'I',
+  ['VISUAL'] = 'V',
+  ['V-BLOCK'] = 'VB',
+  ['V-REPLACE'] = 'VR',
+  ['REPLACE'] = 'R',
+  ['COMMAND'] = 'C',
+  ['SHELL'] = 'SH',
+  ['TERMINAL'] = 'T',
+  ['EX'] = 'X',
+  ['S-BLOCK'] = 'SB',
+  ['S-LINE'] = 'SL',
+  ['SELECT'] = 'S',
+  ['CONFIRM'] = 'Y?',
+  ['MORE'] = 'M',
+}
+-- stylua: ignore
+local colors = {
+  blue   = '#80a0ff',
+  cyan   = '#79dac8',
+  black  = '#080808',
+  white  = '#ffffff',
+  red    = '#ff5189',
+  violet = '#d183e8',
+  grey   = '#404040',
+  green  = '#a5fc03',
+  pink   = '#fa64e6',
+  yellow = '#fff530',
+  grey2  = '#353835',
+}
+local bubbles_theme = {
+  normal = {
+    a = { fg = colors.grey2, bg = colors.green , gui = 'bold'},
+    b = { fg = colors.white, bg = colors.grey },
+    c = { fg = colors.white },
+  },
+  command = { a = {fg = colors.grey2, bg = colors.white , gui = 'bold'} },
+  insert = { a = { fg = colors.grey2, bg = colors.yellow, gui = 'bold' } },
+  visual = { a = { fg = colors.white, bg = colors.pink, gui = 'bold'} },
+  replace = { a = { fg = colors.white, bg = colors.red , gui = 'bold' } },
 
--- Lấy theme nightfly từ lualine
-local lualine_theme = require("lualine.themes.catppuccin")
-
-
---Set color Insert, Command, Visual, Normal
-local new_colors = {
-  blue = "#65D1FF",
-  green = "#3EFFDC",
-  violet = "#FF61EF",
-  yellow = "#FFDA7B",
-  black = "#000000",
+  inactive = {
+    a = { fg = colors.white, bg = colors.grey,   gui = 'bold' },
+    b = { fg = colors.white, bg = colors.black,  gui = 'bold' },
+    c = { fg = colors.white, bg = colors.grey2,  gui = 'bold' },
+  },
 }
 
-
-
-  
-
-
---
--- Cấu hình lualine với theme đã thay đổi và các thành phần khác
-lualine.setup({
+require('lualine').setup {
   options = {
-      icons_enabled = true,
-      theme = lualine_theme,
-      component_separators = { left = '', right = ''}, --
-      section_separators = { left = '', right = ''}, --
-      disabled_filetypes = {
-        statusline = {},
-        winbar = {},
-      },
-      ignore_focus = {},
-      always_divide_middle = false,
-      always_show_tabline = false,
-      globalstatus = true,
-      refresh = {
-        statusline = 100,
-        tabline = 100,
-        winbar = 100,
-      }
-    },
-    sections = 
-    {
-      lualine_z = 
-      {
-        {
-          'buffers',
-          use_mode_colors = true,
-          symbols = 
-          {
-            modified = ' ●',      -- Text to show when the buffer is modified
-            alternate_file = ' ► ', -- Text to show to identify the alternate file
-            directory =  '',       
-          },
-        },
-      },
-
-      lualine_b = {'diff'},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {'branch'},
-      lualine_a = {'mode'
-      
-      }
-
-    },
-
-    inactive_sections = {
-      lualine_a = {{
-       'tabs',
-        tab_max_length = 40,
-        max_length = vim.o.columns / 3,
-        mode = 2,
-        path = 0,
-        use_mode_colors = true,
-        tabs_color = {
-          active = 'lualine_a_normal',
-          inactive = 'lualine_a_inactive',
-        },
-        show_modified_status = true,
-        symbols = {
-          modified = '[+]',
-        },
-        fmt = function(name, context)
-          local buflist = vim.fn.tabpagebuflist(context.tabnr)
-          local winnr = vim.fn.tabpagewinnr(context.tabnr)
-          local bufnr = buflist[winnr]
-          local mod = vim.fn.getbufvar(bufnr, '&mod')
-          return name .. (mod == 1 and ' +' or '')
-        end},
-    },
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {}
-    },
-    tabline = {},
-
-    winbar = {
-
-
-
+    theme = bubbles_theme,
+    component_separators = {left = '', right = '', use_mode_colors = true },
+    section_separators = {left = '', right = '' },
   },
-    inactive_winbar ={},
+  sections = {
+    lualine_a = { { 'mode', separator = { right = '' }, right_padding = 2 , fmt = function(s) return mode_map[s] or s end } },
+    lualine_b = {
+      'branch',
+      {'diff', symbols = {added = " 􀣝  " , modified = '~', removed = '􀢂  '} },
+    },
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {'filetype'},
+    lualine_z = {
+      {
 
-    extensions = {'fzf'}
-  })
+        'buffers',
+        separator = { left = '' },
+        left_padding = 2,
+        symbols = {
+          modified = ' 􀈌  ',
+          alternate_file = ' 􁥦    ',
+          directory =  '  ',
+        },
+        use_mode_colors = true,
+
+      },
+    },
+  },
+
+  inactive_sections = {
+    lualine_a = { 'filename' },
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {},
+  },
+  extensions = {},
+}

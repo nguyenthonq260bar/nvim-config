@@ -44,7 +44,8 @@ return packer.startup(function(use)
   use("folke/tokyonight.nvim") -- Giao diện màu "tokyonight"
   use("xiyaowong/transparent.nvim")
   use { "catppuccin/nvim", as = "catppuccin" }
-  
+  use ({'goolord/alpha-nvim', dependencies= {'nvim-tree/nvim-web-devicons'}})
+
   use {
       'nvim-treesitter/nvim-treesitter',
       run = function()

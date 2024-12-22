@@ -5,6 +5,17 @@ opt.relativenumber = true
 opt.number = true
 opt.fillchars = {eob = " "}
 
+--command defaults
+vim.cmd([[autocmd VimEnter * if !argc() | Alpha | endif]])
+
+
+
+
+
+-- Set splitright and splitbelow to avoid creating an additional split
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
 -- tabs & indentation
 opt.tabstop = 2
 opt.shiftwidth = 2
@@ -20,6 +31,9 @@ opt.smartcase = true
 
 -- cursor line
 opt.cursorline = true
+
+
+
 
 --appearance
 opt.termguicolors = true
